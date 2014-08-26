@@ -33,7 +33,7 @@ class ZulipRequestHandler:
       
     message_handler_dispatcher = {
         'error': handle_error_message,
-        'text': hanlde_text_message,
+        'text' : handle_text_message,
         'image': handle_image_message,
     }
 	
