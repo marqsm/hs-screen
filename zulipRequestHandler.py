@@ -1,18 +1,14 @@
 import re
-import imageRenderer as ImageRenderer
-import textRenderer as TextRenderer
-
 
 class ZulipRequestHandler:
-    def __init__(self, zulipClient, username, screenSize):
+    def __init__(self, zulipClient, username, text_renderer, image_renderer):
         self.SCREEN_SIZE = screenSize
         self.USERNAME = username
         # If string starts with "@led-bot" or "led-bot"
         self.BOT_MSG_PREFIX = '^(\\@\\*\\*)*led-bot(\\*\\*)*'
         self.zulipClient = zulipClient
-        self.screen_width, self.screen_height = self.SCREEN_SIZE
-        self.text_renderer = TextRenderer.TextRenderer()
-        self.image_renderer = ImageRenderer.ImageRenderer(self.SCREEN_SIZE)
+        self.text_renderer = text_renderer
+        self.image_renderer = image_renderer
         return None
 	
     def __handle_error_message(self, msg, msgToken):
