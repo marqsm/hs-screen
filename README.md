@@ -5,7 +5,7 @@ LED Bot
 
 A LED application server. Stream images, messages and more to LEDs in your home, office, hacker space.
 
-Currently pipeline is working, supports to commands.
+Currently pipeline is working, supports 2 commands.
 
 | command                              | parameters         | 
 | ------------------------------------ | ------------------ |

@@ -35,9 +35,14 @@ messageQueue = MessageQueue.MessageQueue()
 # Also message sending etc
 zulipClient = zulip.Client(email=ZULIP_USERNAME,
                            api_key=API_KEY)
+
+text_renderer = TextRenderer.TextRenderer();
+image_renderer = ImageRenderer.ImageRenderer(SCREEN_SIZE);
+
 zulipRequestHandler = ZulipRequestHandler.ZulipRequestHandler(zulipClient,
                                                               ZULIP_USERNAME,
-                                                              SCREEN_SIZE)
+                                                              text_renderer,
+                                                              image_renderer)
 # opcClient is the Open Pixel Control client
 # which provides the drivers (using LEDscape) an API to the LED-screen
 opcClient = opc.Client(LED_SCREEN_ADDRESS)
