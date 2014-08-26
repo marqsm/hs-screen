@@ -12,7 +12,7 @@ class ZulipRequestHandler:
         return None
 	
     def __handle_error_message(self, msg, msgToken):
-        self.send_response(self.getResponse(msg, "syntaxError"))
+        self.send_response(self.get_response(msg, "syntaxError"))
         # Do we need to do something here?
         return None;
 	
@@ -37,21 +37,21 @@ class ZulipRequestHandler:
     def get_msg_queue_token(self, msg):
         
         # Do stuff
-        if not self.isBotMessage(msg):
+        if not self.is_bot_message(msg):
           	return None
         
         print("is Bot message")
-        msgToken = self.tokenizeMessage(msg)
+        msgToken = self.tokenize_message(msg)
         
         # use dispatcher to handle the message
         queue_token = message_handler_dispatcher.get(msgToken['type'],'error')(msg, msgToken)
         
         # if queue item valid, send response to user
         if queue_token["valid"]:
-            self.send_response(self.getResponse(msg))
+            self.send_response(self.get_response(msg))
             return queue_token
         
-        self.send_response( self.getResponse(msg, "unknownError"))
+        self.send_response( self.get_response(msg, "unknownError"))
         return None
 
 
@@ -66,12 +66,12 @@ class ZulipRequestHandler:
       'show-text': lambda text: { 'type':'text','text': text },
       'error': lambda dummy: { 'type':'error' }
     }
-    def tokenizeMessage(self, msg):
+    def tokenize_message(self, msg):
         arr = re.sub(self.BOT_MSG_PREFIX, '', msg["content"]).split()
         
         token = token_formats.get(arr[0],'error')(arr[1:])
         
-        print('tokenizeMessage: ', token)
+        print('tokenize_message: ', token)
         
         return token
 
@@ -84,7 +84,7 @@ class ZulipRequestHandler:
             return msg["sender_email"]
         return None
 
-    # getResponse :: create response to message sender
+    # get_response :: create response to message sender
     #   - ok-message
     #   - error-message
     #       - invalid syntax - explain how to use
@@ -102,19 +102,20 @@ class ZulipRequestHandler:
                           AND I HAVE NO IDEA WHAT IT WAS!""",
       'default': "Yeah, this default message should never be reached.."
     }
-    def getResponse(self, msg, status="ok"):
-        
-        msgText = statuses.get(status,'default')
-        
+    
+    def get_response(self, msg, status="ok"):
         return {
             "type": msg["type"],
-            "subject": msg["subject"],           # topic within the stream
-            "to": self.get_msg_to(msg),         # name of the stream
-            "content": "%s" % msgText        # message to print to stream
+            # topic within the stream
+            "subject": msg["subject"],           
+            # name of the stream
+            "to": self.get_msg_to(msg),      
+            # message to print to stream
+            "content": "%s" % statuses.get(status,'default')        
         }
 
     # Checks if message is meant for the bot
-    def isBotMessage(self, msg):
+    def is_bot_message(self, msg):
         return (msg["sender_email"] != self.USERNAME 
                 and re.match(self.BOT_MSG_PREFIX, msg["content"], flags=re.I or re.X))
 
