@@ -15,16 +15,16 @@ class ZulipRequestHandler:
         self.image_renderer = ImageRenderer.ImageRenderer(self.SCREEN_SIZE)
         return None
 	
-    def handle_error_message(self, msg, msgToken):
+    def __handle_error_message(self, msg, msgToken):
         self.send_response(self.getResponse(msg, "syntaxError"))
         # Do we need to do something here?
         return None;
 	
-    def handle_text_message(self, msg, msgToken):
+    def __handle_text_message(self, msg, msgToken):
         print "getMsgQueueToken text"
         return self.text_renderer.get_queue_token(msgToken)
 	
-    def handle_image_message(self, msg, msgToken):
+    def __handle_image_message(self, msg, msgToken):
         print "getMsgQueueToken image"
         queue_token = self.image_renderer.get_queue_token(msgToken)
         print("This is what I got from ImageRenderer")
@@ -32,9 +32,9 @@ class ZulipRequestHandler:
         return queue_token
       
     message_handler_dispatcher = {
-        'error': handle_error_message,
-        'text' : handle_text_message,
-        'image': handle_image_message,
+        'error': __handle_error_message,
+        'text' : __handle_text_message,
+        'image': __handle_image_message,
     }
 	
     # Main function, this is what gets passed to the actual Zulip Client
