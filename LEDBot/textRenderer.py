@@ -26,7 +26,7 @@ class TextRenderer:
         self.MAX_TEXT_LENGTH = 1000
 
         # new image and font
-        self.font = ImageFont.truetype(font, 22)
+        self.font = ImageFont.truetype(font, 27)
 
         # Emoji Handler
         self.emoji_handler = EmojiHandler.Emoji()

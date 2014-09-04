@@ -70,13 +70,14 @@ class LEDBot(object):
             time.sleep(0.1)
             self._process_queue()
 
-    def handle_message(self, msg, listener):
+    def handle_message(self, msg, listener=None):
         token = self._process_message(msg)
         if token is not None:
             # Add msg to log.
             logging.info(msg)
             message_queue.put(token)
-        self._send_response(token, msg, listener)
+	if listener:
+            self._send_response(token, msg, listener)
 
     def scroll_message(self, image):
         """ Scroll the image through the screen. """
@@ -231,8 +232,9 @@ class LEDBot(object):
         Checks the queue and processes the first message on the queue.
 
         """
-
-        if not message_queue.empty():
+	if message_queue.empty():
+	    self.handle_message({"content": "led-bot show-text FEED ME MESSAGES..."})
+	else:
             nextMsg = message_queue.get(block=False)
 
             # Display of message needs to happen in its own thread
