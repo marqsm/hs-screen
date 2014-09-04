@@ -61,3 +61,5 @@ venv
 CONFIG.py
 zulip
 credentials
+
+*.pickle
